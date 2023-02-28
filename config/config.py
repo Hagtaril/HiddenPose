@@ -1,0 +1,113 @@
+import os
+from yacs.config import CfgNode as CN
+
+_C = CN()
+
+
+_C.OUTPUT_DIR = ''
+_C.GPUS = (2)
+_C.DEVICE = (2)
+_C.NUM_WOKERS = 8
+_C.AUTO_RESUME = False
+_C.LOG_DIR = './log'
+_C.RESULT_DIR = './result'
+_C.PHASE = 'continue_train' # 'eval' or 'continue_train'  or 'train' 
+
+# model
+_C.MODEL = CN()
+_C.MODEL.NAME = 'nlospose'
+_C.MODEL.DNUM = 1
+_C.MODEL.BASEDIM = 1
+_C.MODEL.BIN_LEN = 0.01
+_C.MODEL.WALL_SIZE = 2.
+_C.MODEL.IN_CHANNELS = 1
+_C.MODEL.OUT_CHANNELS = 1
+_C.MODEL.FEATURE_CHANNELS = 2
+_C.MODEL.GRID_DIM = 256
+_C.MODEL.TIME_SIZE = 512
+_C.MODEL.IMAGE_SIZE = [256, 256]
+_C.MODEL.HEATMAP_SIZE = [64, 64, 64]
+# _C.MODEL.PATCH_SIZE = 16
+_C.MODEL.PATCH_SIZE = 4
+_C.MODEL.DOWNSAMPLE_RATIO = 1
+_C.MODEL.MODE = 'lct'
+_C.MODEL.COORD_REPRESENTATION = 'sa-simdr' #'3DHeatmap' #'2DHeatmap'#'heatmap'#'simdr'
+_C.MODEL.NUM_JOINTS = 24
+_C.MODEL.BACKBONE = 'posenet3d_50'
+_C.MODEL.PRETRAIN_AUTOENCODER = True
+_C.MODEL.PRETRAIN_AUTOENCODER_PATH = './lib/nlos_unet.pth'
+
+
+# for transformer
+_C.MODEL.PATCH_FEATURE_DIM = 256
+# _C.MODEL.PATCH_FEATURE_DIM = 64
+# _C.MODEL.DEPTH = 12
+_C.MODEL.DEPTH = 8
+_C.MODEL.HEADS = 8
+# _C.MODEL.DIM_HEAD = 64
+_C.MODEL.DIM_HEAD = 32
+_C.MODEL.ATTN_DROPOUT = 0.
+_C.MODEL.FF_DROPOUT = 0.
+_C.MODEL.ROTARY_EMB = True
+# _C.MODEL.SIMDR_DIM = 24 * 3
+_C.MODEL.OUT_DIM = (64*2 + 128) * 2#64 * 64 * 64
+_C.MODEL.NUM_FRAMES = 16
+
+
+
+# data
+_C.DATASET = CN()
+_C.DATASET.NAME = 'NlosPoseDataset'
+_C.DATASET.NUM_JOINTS = 24
+_C.DATASET.TARGET_TYPE = 'gaussian'
+_C.DATASET.HEATMAP_SIZE = [64, 64, 64]
+_C.DATASET.VOL_SIZE = [256,256,256]
+_C.DATASET.DAWNSAMPLE_CNT = 1
+_C.DATASET.SIGMA = 2
+_C.DATASET.USE_DIFFERENT_JOINTS_WEIGHT = True
+
+_C.DATASET.PHASE = 'train'
+_C.DATASET.TRAIN_PATH = "/data1/nlospose/pose_v2/"
+
+_C.DATASET.VALID_PATH = "/data1/nlospose/pose_v2/"
+
+
+_C.DATASET.SIMDR_SPLIT_RATIO = 2
+_C.DATASET.IMAGE_SIZE = [64,64,128]
+
+# cudnn
+_C.CUDNN = CN()
+_C.CUDNN.BENCHMARK = True
+_C.CUDNN.DETERMINISTIC = False
+_C.CUDNN.ENABLED = True
+
+# train
+_C.TRAIN = CN()
+_C.TRAIN.OPTIMIZER = 'adam'
+_C.TRAIN.LR = 0.001
+_C.TRAIN.LR_FACTOR = 0.2
+_C.TRAIN.LR_STEP = [ 2, 4, 13]
+_C.TRAIN.BATCH_SIZE = 2
+_C.TRAIN.BEGIN_EPOCH = 0
+_C.TRAIN.END_EPOCH = 15
+
+
+# valid
+_C.VALID = CN()
+_C.VALID.BATCH_SIZE = 1
+
+# loss
+_C.LOSS = CN()
+# _C.LOSS.TYPE = 'NMTNORMCritierion'
+_C.LOSS.TYPE = 'L2JointLocationLoss'
+# _C.LOSS.TYPE = 'JointMSELoss'
+_C.LOSS.LABEL_SMOOTHING = 0.2
+
+
+# results
+_C.RESULT = CN()
+_C.RESULT.FINAL_OUTPUT_DIR = './checkpoints'
+
+
+
+
