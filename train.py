@@ -31,25 +31,31 @@ def parse_args():
     parser = argparse.ArgumentParser(description='HiddenPose network args')
 
     parser.add_argument(
-        '--modelDir',
+        '--model',
         help='model directory',
         type=str,
         default=''
     )
     parser.add_argument(
-        '--logDir',
+        '--test',
+        help='test options',
+        type=str,
+        default=''
+    )
+    parser.add_argument(
+        '--log',
         help='log directory',
         type=str,
         default=''
     )
     parser.add_argument(
-        '--dataDir',
+        '--data',
         help='data directory',
         type=str,
         default=''
     )
     parser.add_argument(
-        '--DEVICE',
+        '--device',
         help='index of GPU to use',
         type=int,
         default=0
