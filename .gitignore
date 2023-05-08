@@ -1,0 +1,8 @@
+/checkpoints/
+/data/
+/packages/
+/results/
+/log
+*.pyc
+/dataset_nlospose
+/trained_weights
